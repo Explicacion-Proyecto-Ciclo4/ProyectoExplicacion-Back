@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { Enum_EstadoProyecto, Enum_FaseProyecto } from './enums';
 
 interface Project{
-   nombre: String,
+   nombre: string,
    presupuesto: number,
    fechaInicio: Date,
    fechaFin: Date,
@@ -10,7 +10,7 @@ interface Project{
    fase: Enum_FaseProyecto,
 }
 
-const projectSchema = new Schema({
+const projectSchema = new Schema<Project>({
    nombre: {
       type: String,
       required: true,
@@ -39,4 +39,6 @@ const projectSchema = new Schema({
    }
 })
 
-const ProjectModel = model("Project", projectSchema)
+const ProjectModel = model("Project", projectSchema);
+
+export { ProjectModel };

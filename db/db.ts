@@ -1,15 +1,13 @@
 import { connect } from 'mongoose';
 
 const conectarBD = async () => {
-   return await connect(
-      'mongodb+srv://adminDavid:MunDial22*@gestionproyectos4.u6oih.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
-   )
+   return await connect(process.env.DATABASE_URL)
    .then(() => {
-      console.log("Conexión exitosa!")
+      console.log('Conexion exitosa');
    })
    .catch((e) => {
-      console.error("Error de conexión", e)
+      console.error('Error conectando a la bd', e);
    });
-}
+};
 
 export default conectarBD;
