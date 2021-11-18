@@ -1,30 +1,15 @@
 import { gql } from 'apollo-server-express';
 
 const typeDefs = gql`
-   scalar Date
-   enum Role {
-      Estudiante
-      Lider
-      Administrador
-   }
-   enum ProjectStatus {
-      Activo
-      Inactivo
-   }
-   enum ProjectPhase {
-      Iniciado
-      En
-      Desarrollo
-      Terminado
-   }
+   
    type User {
       _id: ID!
       name: String!
       lastName: String!
       email: String!
       document: String!
-      role: Role!
-      status: String!
+      role: Enum_Rol
+      status: Enum_EstadoProyecto
    }
    type Project {
       _id: ID
@@ -32,8 +17,8 @@ const typeDefs = gql`
       budget: Float!
       startDate: Date!
       finishDate: Date
-      projectStatus: ProjectStatus!
-      projectPhase: ProjectPhase!
+      projectStatus: Enum_EstadoProyecto
+      projectPhase: Enum_EstadoProyecto
       leader: User!
    }
    type Query {
@@ -47,16 +32,16 @@ const typeDefs = gql`
          lastName: String!
          email: String!
          document: String!
-         role: Role!
-         status: String!
+         role: Enum_Rol
+         status: Enum_EstadoProyecto
       ): User
       updateUser(
          name: String!
          lastName: String!
          email: String!
          document: String!
-         role: String!
-         status: String!
+         role: Enum_Rol
+         status: Enum_EstadoProyecto
       ): User
       deleteUser(id: ID!): User
    }
