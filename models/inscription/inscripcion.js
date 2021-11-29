@@ -1,15 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { Enum_EstadoInscripcion } from './enums';
-import { ProjectModel } from './project';
-import { UserModel } from './user';
-
-interface Inscription {
-   estado: Enum_EstadoInscripcion;
-   fechaIngreso: Date;
-   fechaEgreso: Date;
-   proyecto: Schema.Types.ObjectId;
-   estudiante: Schema.Types.ObjectId;
-}
+import { Enum_EstadoInscripcion } from '../enums/enums';
+import { ProjectModel } from '../project/project';
+import { UserModel } from '../user/user';
 
 const inscriptionSchema = new Schema<Inscription>({
    estado: {
