@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { ObjectiveModel } from '../objective.js';
-import { UserModel } from '../usuario/usuario.js';
+import { UserModel } from '../user/user.js';
 const { Schema, model } = mongoose;
 
 const projectSchema = new Schema(

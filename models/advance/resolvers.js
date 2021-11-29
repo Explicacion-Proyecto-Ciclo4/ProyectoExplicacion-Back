@@ -1,4 +1,4 @@
-import { ModeloAvance } from './avance.js';
+import { ModeloAvance } from './advance.js';
 
 const resolversAvance = {
    Query: {

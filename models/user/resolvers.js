@@ -1,4 +1,4 @@
-import { UserModel } from './usuario.js';
+import { UserModel } from './user.js';
 import bcrypt from 'bcrypt';
 
 const resolversUsuario = {
