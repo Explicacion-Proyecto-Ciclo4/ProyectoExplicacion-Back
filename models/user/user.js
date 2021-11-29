@@ -1,44 +1,72 @@
-import { Schema, model } from 'mongoose';
-import { Enum_Rol, Enum_EstadoUsuario } from '../enums/enums';
+import { UserModel } from './usuario.js';
+import bcrypt from 'bcrypt';
 
-const userSchema = new Schema<User>({
-   correo: {
-      type: String,
-      required: true,
-      unique: true,
-      validate: {
-         validator: (email) => {
-            return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+const resolversUsuario = {
+   Query: {
+      Usuarios: async (parent, args, context) => {
+         const usuarios = await UserModel.find().populate([
+         {
+            path: 'inscripciones',
+            populate: {
+               path: 'proyecto',
+               populate: [{ path: 'lider' }, { path: 'avances' }],
+            },
          },
-         message: 'El correo no es correcto',
-      }
+         {
+            path: 'proyectosLiderados',
+         },
+         ]);
+         return usuarios;
+      },
+      Usuario: async (parent, args) => {
+         const usuario = await UserModel.findOne({ _id: args._id });
+         return usuario;
+      },
    },
-   identificacion: {
-      type: String,
-      required: true,
-      unique: true,
-   },
-   nombre: {
-      type: String,
-      required: true,
-   },
-   apellido: {
-      type: String,
-      required: true,
-   },
-   rol: {
-      type: String,
-      required: true,
-      enum: Enum_Rol,
-   },
-   estado: {
-      type: String,
-      required: true,
-      enum: Enum_EstadoUsuario,
-   }
+   Mutation: {
+      crearUsuario: async (parent, args) => {
+         const salt = await bcrypt.genSalt(10);
+         const hashedPassword = await bcrypt.hash(args.password, salt);
+         const usuarioCreado = await UserModel.create({
+         nombre: args.nombre,
+         apellido: args.apellido,
+         identificacion: args.identificacion,
+         correo: args.correo,
+         rol: args.rol,
+         password: hashedPassword,
+         });
 
-});
+         if (Object.keys(args).includes('estado')) {
+         usuarioCreado.estado = args.estado;
+         }
 
-const UserModel = model('User', userSchema);
+         return usuarioCreado;
+      },
+      editarUsuario: async (parent, args) => {
+         const usuarioEditado = await UserModel.findByIdAndUpdate(
+         args._id,
+         {
+            nombre: args.nombre,
+            apellido: args.apellido,
+            identificacion: args.identificacion,
+            correo: args.correo,
+            estado: args.estado,
+         },
+         { new: true }
+         );
 
-export { UserModel };
+         return usuarioEditado;
+      },
+      eliminarUsuario: async (parent, args) => {
+         if (Object.keys(args).includes('_id')) {
+         const usuarioEliminado = await UserModel.findOneAndDelete({ _id: args._id });
+         return usuarioEliminado;
+         } else if (Object.keys(args).includes('correo')) {
+         const usuarioEliminado = await UserModel.findOneAndDelete({ correo: args.correo });
+         return usuarioEliminado;
+         }
+      },
+   },
+};
+
+export { resolversUsuario };

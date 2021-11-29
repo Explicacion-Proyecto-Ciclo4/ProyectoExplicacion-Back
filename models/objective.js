@@ -1,14 +1,15 @@
-import { Schema, model } from 'mongoose';
-import { Enum_TipoObjetivo } from './enums/enums';
+import mongoose from 'mongoose';
 
-const objectiveSchema = new Schema<Objective>({
+const { Schema, model } = mongoose;
+
+const objectiveSchema = new Schema({
    descripcion: {
       type: String,
       required: true,
    },
    tipo: {
       type: String,
-      enum: Enum_TipoObjetivo,
+      enum: ['GENERAL', 'ESPECIFICO'],
       required: true,
    },
 });

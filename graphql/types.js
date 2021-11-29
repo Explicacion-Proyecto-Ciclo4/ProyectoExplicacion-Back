@@ -1,50 +1,21 @@
 import { gql } from 'apollo-server-express';
+import { tiposEnums } from '../models/enums/tipos.js';
+import { tiposUsuario } from '../models/usuario/tipos.js';
+import { tiposProyecto } from '../models/proyecto/tipos.js';
+import { tiposAvance } from '../models/avance/tipos.js';
+import { tiposInscripcion } from '../models/inscripcion/tipos.js';
+import { tiposAutenticacion } from './auth/tipos.js';
 
-const typeDefs = gql`
-   
-   type User {
-      _id: ID!
-      name: String!
-      lastName: String!
-      email: String!
-      document: String!
-      role: Enum_Rol
-      status: Enum_EstadoProyecto
-   }
-   type Project {
-      _id: ID
-      name: String!
-      budget: Float!
-      startDate: Date!
-      finishDate: Date
-      projectStatus: Enum_EstadoProyecto
-      projectPhase: Enum_EstadoProyecto
-      leader: User!
-   }
-   type Query {
-      Users: [User]
-      User(_id: ID!): User
-      Projects: [Project]
-   }
-   type Mutation {
-      createUser(
-         name: String!
-         lastName: String!
-         email: String!
-         document: String!
-         role: Enum_Rol
-         status: Enum_EstadoProyecto
-      ): User
-      updateUser(
-         name: String!
-         lastName: String!
-         email: String!
-         document: String!
-         role: Enum_Rol
-         status: Enum_EstadoProyecto
-      ): User
-      deleteUser(id: ID!): User
-   }
+const tiposGlobales = gql`
+  scalar Date
 `;
 
-export default typeDefs;
+export const tipos = [
+  tiposGlobales,
+  tiposEnums,
+  tiposUsuario,
+  tiposProyecto,
+  tiposAvance,
+  tiposInscripcion,
+  tiposAutenticacion,
+];
